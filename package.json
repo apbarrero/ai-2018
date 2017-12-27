@@ -1,0 +1,14 @@
+{
+  "name": "ai-2018",
+  "version": "1.0.0",
+  "description": "Randomize assignment for secret Santa",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "author": "Antonio Pérez Barrero",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  }
+}
