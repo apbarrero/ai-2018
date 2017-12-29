@@ -21,8 +21,12 @@ const randomFriend = users => {
    let _users = users.map(u => u.id);
    let mapping = _.shuffle(_users);
    let result = _.zipObject(_users, mapping);
-   const same = r => _.some(result, (v, k) => v == k);
-   while (same(result)) {
+   const banned = r => _.some(result, (v, k) => {
+      let b = _.find(users, u => u.id == k).banned||[];
+      b.push(k);
+      return b.includes(v);
+   });
+   while (banned(result)) {
       mapping = _.shuffle(_users);
       result = _.zipObject(_users, mapping);
    }

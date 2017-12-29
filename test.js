@@ -40,5 +40,20 @@ describe('ai', () => {
             _.each(results, (v, k) => assert.notEqual(v, k));
          });
       });
+      describe('ban', () => {
+         const testUsers = [
+            {id: 'foo', name: 'Foo', phone: '+12345', banned: ['bar']},
+            {id: 'bar', name: 'Bar', phone: '+12346', banned: ['foo']},
+            {id: 'baz', name: 'Baz', phone: '+12347', banned: ['qux']},
+            {id: 'qux', name: 'Qux', phone: '+12348', banned: ['baz']},
+         ];
+         it('returns value not banned', () => {
+            let results = ai.randomFriend(testUsers);
+            _.each(results, (v, k) => {
+               let banned = _.find(testUsers, u => u.id == k).banned;
+               assert(!banned.includes(v));
+            });
+         });
+      });
    });
 });
