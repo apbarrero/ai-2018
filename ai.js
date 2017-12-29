@@ -4,6 +4,9 @@ const _ = require('lodash');
 const MongoClient = require('mongodb').MongoClient;
 const dbName = process.env.DBNAME;
 const dbUri = process.env.MONGO_URL + '/' + dbName;
+const accountSid = process.env.TWILIO_ACCOUNTSID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioClient = require('twilio')(accountSid, authToken);
 
 const getUsers = done => {
    MongoClient.connect(dbUri, (err, client) => {
@@ -33,4 +36,12 @@ const randomFriend = users => {
    return result;
 };
 
-module.exports = {getUsers, randomFriend};
+const sendMessage = (to, friend) => {
+   return twilioClient.messages.create({
+      to: to.phone,
+      from: '+34986080561',
+      body: `Hola ${to.name}, te ha tocado ser el amigo invisible de ${friend}`
+   });
+}
+
+module.exports = {getUsers, randomFriend, sendMessage};
