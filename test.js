@@ -25,9 +25,19 @@ describe('ai', () => {
          ];
          it('returns one key for each user', () => {
             let results = ai.randomFriend(testUsers);
-            _.pluck(testUsers, 'id').forEach(u => {
-               Object.keys(results).includes(u);
+            _.map(testUsers, 'id').forEach(u => {
+               assert(Object.keys(results).includes(u));
             });
+         });
+         it('returns one value for each user', () => {
+            let results = ai.randomFriend(testUsers);
+            _.map(testUsers, 'id').forEach(u => {
+               assert(Object.values(results).includes(u));
+            });
+         });
+         it('returns value not equal to key', () => {
+            let results = ai.randomFriend(testUsers);
+            _.each(results, (v, k) => assert.notEqual(v, k));
          });
       });
    });
