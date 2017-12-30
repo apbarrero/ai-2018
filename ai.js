@@ -8,6 +8,7 @@ const accountSid = process.env.TWILIO_ACCOUNTSID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = require('twilio')(accountSid, authToken);
 const express = require('express');
+const path = require('path');
 
 const getUsers = done => {
    MongoClient.connect(dbUri, (err, client) => {
@@ -69,7 +70,7 @@ const run = () => {
             _.forEach(pairs, (v, k) => {
                console.log(`A ${k} le ha tocado regalar a ${v}`)
             });
-            res.send('ok');
+            res.sendFile(path.join(__dirname, 'ok.html'));
          }
       });
    });
