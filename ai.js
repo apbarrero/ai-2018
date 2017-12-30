@@ -63,7 +63,7 @@ const main = done => {
       _.forEach(pairs, (v, k) => {
          let friend = _.find(users, u => u.id == k);
          let target = _.find(users, u => u.id == v);
-         //sendMessage(friend, target.name);
+         sendMessage(friend, target.name);
       });
       fs.writeFileSync(RESULT_FILE, JSON.stringify(pairs));
       done();
