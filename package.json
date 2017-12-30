@@ -4,6 +4,7 @@
   "description": "Randomize assignment for secret Santa",
   "main": "index.js",
   "scripts": {
+    "start": "env $(cat .env) node ai.js",
     "test": "env $(cat .env) mocha test.js"
   },
   "author": "Antonio Pérez Barrero",
