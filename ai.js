@@ -7,6 +7,7 @@ const dbUri = process.env.MONGO_URL + '/' + dbName;
 const accountSid = process.env.TWILIO_ACCOUNTSID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = require('twilio')(accountSid, authToken);
+const express = require('express');
 
 const getUsers = done => {
    MongoClient.connect(dbUri, (err, client) => {
@@ -46,22 +47,36 @@ const sendMessage = (friend, target) => {
    });
 }
 
-const main = () => {
+const main = done => {
    getUsers((err, users) => {
-      if (err) {
-         console.error(err);
-         return;
-      }
+      if (err) done(err);
       let pairs = randomFriend(users);
       _.forEach(pairs, (v, k) => {
          let friend = _.find(users, u => u.id == k);
          let target = _.find(users, u => u.id == v);
-         console.log(`A ${friend.name} le ha tocado regalar a ${target.name}`)
          //sendMessage(friend, target.name);
       });
+      done(null, pairs);
    });
 }
-module.exports = {getUsers, randomFriend, sendMessage};
+
+const run = () => {
+   const app = express();
+   app.get('/', (req, res) => {
+      main((err, pairs) => {
+         if (err) res.status(500).send(err);
+         else {
+            _.forEach(pairs, (v, k) => {
+               console.log(`A ${k} le ha tocado regalar a ${v}`)
+            });
+            res.send(pairs);
+         }
+      });
+   });
+   app.listen(3000, () => console.log('AI-2018 running'));
+};
 
 if (require.main == module)
-   main();
+   run();
+
+module.exports = {getUsers, randomFriend, sendMessage};

@@ -12,6 +12,7 @@
     "mocha": "^4.0.1"
   },
   "dependencies": {
+    "express": "^4.16.2",
     "lodash": "^4.17.4",
     "mongodb": "^3.0.1",
     "twilio": "^3.11.0"
