@@ -36,12 +36,32 @@ const randomFriend = users => {
    return result;
 };
 
-const sendMessage = (to, friend) => {
+const sendMessage = (friend, target) => {
+   let msg =
+      `Hola ${friend.name}, te ha tocado ser el amigo invisible de ${target}`;
    return twilioClient.messages.create({
-      to: to.phone,
+      to: friend.phone,
       from: '+34986080561',
-      body: `Hola ${to.name}, te ha tocado ser el amigo invisible de ${friend}`
+      body: msg
    });
 }
 
+const main = () => {
+   getUsers((err, users) => {
+      if (err) {
+         console.error(err);
+         return;
+      }
+      let pairs = randomFriend(users);
+      _.forEach(pairs, (v, k) => {
+         let friend = _.find(users, u => u.id == k);
+         let target = _.find(users, u => u.id == v);
+         console.log(`A ${friend.name} le ha tocado regalar a ${target.name}`)
+         //sendMessage(friend, target.name);
+      });
+   });
+}
 module.exports = {getUsers, randomFriend, sendMessage};
+
+if (require.main == module)
+   main();
