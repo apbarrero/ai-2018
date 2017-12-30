@@ -9,6 +9,9 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioClient = require('twilio')(accountSid, authToken);
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
+
+const RESULT_FILE = './result.json';
 
 const getUsers = done => {
    MongoClient.connect(dbUri, (err, client) => {
@@ -49,6 +52,11 @@ const sendMessage = (friend, target) => {
 }
 
 const main = done => {
+   if (fs.existsSync(RESULT_FILE))
+   {
+      let result = fs.readFileSync(RESULT_FILE);
+      return void done(null, JSON.parse(result));
+   }
    getUsers((err, users) => {
       if (err) done(err);
       let pairs = randomFriend(users);
@@ -57,21 +65,17 @@ const main = done => {
          let target = _.find(users, u => u.id == v);
          //sendMessage(friend, target.name);
       });
-      done(null, pairs);
+      fs.writeFileSync(RESULT_FILE, JSON.stringify(pairs));
+      done();
    });
 }
 
 const run = () => {
    const app = express();
    app.get('/', (req, res) => {
-      main((err, pairs) => {
+      main(err => {
          if (err) res.status(500).send(err);
-         else {
-            _.forEach(pairs, (v, k) => {
-               console.log(`A ${k} le ha tocado regalar a ${v}`)
-            });
-            res.sendFile(path.join(__dirname, 'ok.html'));
-         }
+         else res.sendFile(path.join(__dirname, 'ok.html'));
       });
    });
    app.listen(3000, () => console.log('AI-2018 running'));
