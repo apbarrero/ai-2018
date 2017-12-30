@@ -69,7 +69,7 @@ const run = () => {
             _.forEach(pairs, (v, k) => {
                console.log(`A ${k} le ha tocado regalar a ${v}`)
             });
-            res.send(pairs);
+            res.send('ok');
          }
       });
    });
