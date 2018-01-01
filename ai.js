@@ -6,6 +6,7 @@ const dbName = process.env.DBNAME;
 const dbUri = process.env.MONGO_URL + '/' + dbName;
 const accountSid = process.env.TWILIO_ACCOUNTSID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioSrc = process.env.TWILIO_SOURCE_NO;
 const twilioClient = require('twilio')(accountSid, authToken);
 const express = require('express');
 const path = require('path');
@@ -46,7 +47,7 @@ const sendMessage = (friend, target) => {
       `Hola ${friend.name}, te ha tocado ser el amigo invisible de ${target}`;
    return twilioClient.messages.create({
       to: friend.phone,
-      from: '+34986080561',
+      from: twilioSrc,
       body: msg
    });
 }
