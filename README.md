@@ -36,7 +36,7 @@ the following format:
 
 ### Twilio account
 
-It also needs credentials for a **[Twilio](https://www.twilio.com/)* account*
+It also needs credentials for a **[Twilio](https://www.twilio.com/) account**
 with an SMS cappable phone number.
 
 ### Environment
