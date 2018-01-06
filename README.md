@@ -19,7 +19,7 @@ probably works fine with node >= 6.
 
 ### MongoDB database
 
-It needs a *MongoDB connection string* to connect to a database with a
+It needs a **MongoDB connection string** to connect to a database with a
 collection named `users` that contains data for the participants with
 the following format:
 
@@ -36,7 +36,7 @@ the following format:
 
 ### Twilio account
 
-It also needs credentials for a *[Twilio](https://www.twilio.com/) account*
+It also needs credentials for a **[Twilio](https://www.twilio.com/)* account*
 with an SMS cappable phone number.
 
 ### Environment
