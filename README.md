@@ -36,7 +36,7 @@ the following format:
 
 ### Twilio account
 
-It also needs credentials for a *(Twilio)[https://www.twilio.com/] account*
+It also needs credentials for a *[Twilio](https://www.twilio.com/) account*
 with an SMS cappable phone number.
 
 ### Environment
@@ -56,7 +56,7 @@ TWILIO_SOURCE_NO=+34XXXXXXXXX
 
 ## Running
 
-Just provide the right (environment file)[#environment] and run
+Just provide the right [environment file](#environment) and run
 
 ```
 npm install
@@ -72,7 +72,7 @@ npm test
 
 One of the test cases checked that database contains a non-empty set of users.
 So you will need to provide a valid value for the MongoDB connection string
-and database name in the (environment file)[#environment].
+and database name in the [environment file](#environment).
 
 Tests don't require a Twilio account credentials though.
 
