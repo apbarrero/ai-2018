@@ -89,12 +89,4 @@ describe('ai', () => {
          });
       });
    });
-   describe('sendMessage', () => {
-      xit('returns message id', done => {
-         ai.sendMessage({
-            phone: '+34XXXXXXXXX',
-            name: 'You'
-         }, 'Arthur Dent').then(message => done());
-      });
-   })
 });

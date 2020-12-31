@@ -1,12 +1,7 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const accountSid = process.env.TWILIO_ACCOUNTSID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioSrc = process.env.TWILIO_SOURCE_NO;
-const twilioClient = require('twilio')(accountSid, authToken);
-const express = require('express');
-const path = require('path');
+const { Telegraf } = require('telegraf');
 const fs = require('fs');
 
 const RESULT_FILE = './result.json';
@@ -37,47 +32,60 @@ const randomFriend = users => {
    return result;
 };
 
-const sendMessage = (friend, target) => {
-   let msg =
-      `Hola ${friend.name}, te ha tocado ser el amigo invisible de ${target}`;
-   return twilioClient.messages.create({
-      to: friend.phone,
-      from: twilioSrc,
-      body: msg
-   });
-}
-
-const main = done => {
-   if (fs.existsSync(RESULT_FILE))
-   {
-      let result = fs.readFileSync(RESULT_FILE);
-      return void done(null, JSON.parse(result));
+const raffle = async () => {
+   if (fs.existsSync(RESULT_FILE)) {
+      const result = fs.readFileSync(RESULT_FILE);
+      return JSON.parse(result);
    }
-   getUsers((err, users) => {
-      if (err) done(err);
-      let pairs = randomFriend(users);
-      _.forEach(pairs, (v, k) => {
-         let friend = _.find(users, u => u.id == k);
-         let target = _.find(users, u => u.id == v);
-         sendMessage(friend, target.name);
-      });
-      fs.writeFileSync(RESULT_FILE, JSON.stringify(pairs));
-      done();
+   let users = await new Promise((resolve, reject) => {
+       getUsers((reject, users) => {
+           resolve(users);
+       });
    });
+   const pairs = randomFriend(users);
+   users.forEach((user, i) => {
+       users[i].target = pairs[user.id];
+   });
+   fs.writeFileSync(RESULT_FILE, JSON.stringify(users));
+   return users;
 }
 
-const run = () => {
-   const app = express();
-   app.get('/', (req, res) => {
-      main(err => {
-         if (err) res.status(500).send(err);
-         else res.sendFile(path.join(__dirname, 'ok.html'));
-      });
-   });
-   app.listen(3000, () => console.log('AI-2018 running'));
+const run = async () => {
+    const promptMessage = `
+Soy el bot del amigo invisible de los Reyes 2021 para la familia Barrero.
+
+Confírmame tu número de teléfono para saber quién es tu amigo invisible este año
+`;
+    const bot = new Telegraf(process.env.BOT_TOKEN)
+
+    const results = await raffle();
+    console.log(results);
+
+    bot.command('quit', (ctx) => {
+        // Explicit usage
+        ctx.telegram.leaveChat(ctx.message.chat.id)
+
+        // Using context shortcut
+        ctx.leaveChat()
+    });
+
+    bot.start(ctx => {
+        ctx.reply(`Hola, ${ctx.update.message.from.first_name}. ${promptMessage}`);
+    });
+    bot.on('text', (ctx) => {
+        const phone = ctx.update.message.text;
+        const user = results.find(user => user.phone === phone);
+        if (!user) {
+            ctx.reply('¿Seguro que ése es tu número? Vuelve a dármelo, por favor');
+        } else {
+            ctx.reply(`Has dicho que eres ${user.name}. Tu amigo invisible es ${user.target}`);
+        }
+    });
+
+    bot.launch();
 };
 
 if (require.main == module)
    run();
 
-module.exports = {getUsers, randomFriend, sendMessage};
+module.exports = {getUsers, randomFriend};
