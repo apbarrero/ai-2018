@@ -59,7 +59,6 @@ Confírmame tu número de teléfono para saber quién es tu amigo invisible este
     const bot = new Telegraf(process.env.BOT_TOKEN)
 
     const results = await raffle();
-    console.log(results);
 
     bot.command('quit', (ctx) => {
         // Explicit usage
