@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "express": "^4.16.3",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "mongodb": "^3.0.8",
     "npm": "^6.0.1",
     "twilio": "^3.17.0"
