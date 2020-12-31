@@ -1,9 +1,6 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
-const MongoClient = require('mongodb').MongoClient;
-const dbName = process.env.DBNAME;
-const dbUri = process.env.MONGO_URL + '/' + dbName;
 const accountSid = process.env.TWILIO_ACCOUNTSID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioSrc = process.env.TWILIO_SOURCE_NO;
@@ -15,14 +12,12 @@ const fs = require('fs');
 const RESULT_FILE = './result.json';
 
 const getUsers = done => {
-   MongoClient.connect(dbUri, (err, client) => {
-      if (err) done(err);
-      const db = client.db(dbName);
-      db.collection('users').find({}).toArray((err, result) => {
-         if (err) done(err);
-         done(null, result);
-         client.close();
-      });
+   fs.readFile('./users.json', 'utf-8', (err, res) => {
+       if (err) {
+           done(err);
+       } else {
+           done(err, JSON.parse(res));
+       }
    });
 };
 

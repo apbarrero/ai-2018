@@ -2,15 +2,48 @@
 
 const assert = require('assert');
 const _ = require('lodash');
+const fs = require('fs');
 const ai = require('./ai.js');
 
+const USERS = [
+  {
+    "id": "foo",
+    "name": "Foo",
+    "phone": "+12345",
+    "banned": ["bar"]
+  },
+  {
+    "id": "bar",
+    "name": "Bar",
+    "phone": "+12346",
+    "banned": ["foo"]
+  },
+  {
+    "id": "baz",
+    "name": "Baz",
+    "phone": "+12347",
+    "banned": ["qux"]
+  },
+  {
+    "id": "qux",
+    "name": "Qux",
+    "phone": "+12348",
+    "banned": ["baz"]
+  }
+];
 
 describe('ai', () => {
    describe('getUsers', () => {
-      it('has non-zero size', done => {
+      before(() => {
+          return new Promise(resolve => {
+              fs.writeFile('./users.json', JSON.stringify(USERS), resolve);
+          });
+      });
+      after(() => new Promise(resolve => fs.rm('./users.json', resolve)));
+      it('loads data from file', done => {
          ai.getUsers((err, res) => {
             assert.equal(null, err);
-            assert(res.length);
+            assert.equal(4, res.length);
             done();
          });
       });
