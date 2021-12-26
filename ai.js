@@ -52,7 +52,7 @@ const raffle = async () => {
 
 const run = async () => {
     const promptMessage = `
-Soy el bot del amigo invisible de los Reyes 2021 para la familia Barrero.
+Soy el bot del amigo invisible de los Reyes 2022 para la familia Barrero.
 
 Confírmame tu número de teléfono para saber quién es tu amigo invisible este año
 `;
