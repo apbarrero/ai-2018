@@ -14,7 +14,7 @@
   "author": "Antonio Pérez Barrero",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "^4.1.0"
+    "mocha": "^10.2.0"
   },
   "dependencies": {
     "express": "^4.17.3",
