@@ -17,7 +17,7 @@
     "mocha": "^4.1.0"
   },
   "dependencies": {
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "lodash": "^4.17.21",
     "npm": "^8.3.0",
     "telegraf": "^3.38.0"
