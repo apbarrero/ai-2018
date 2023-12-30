@@ -19,7 +19,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "lodash": "^4.17.21",
-    "npm": "^8.11.0",
-    "telegraf": "^3.38.0"
+    "npm": "^9.7.2",
+    "telegraf": "^3.40.0"
   }
 }
